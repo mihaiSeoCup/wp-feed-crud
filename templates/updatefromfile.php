@@ -1,8 +1,3 @@
-<?php 
-
-$feed->updateFeedFromFile();
-
-?>
 <div class="wrap">
     <h2>WP Feed Update from file</h2>
 	<form action="" method="post" enctype="multipart/form-data">
@@ -13,3 +8,8 @@ $feed->updateFeedFromFile();
 	    <em>Fisierul trebuie sa fie .csv</em><br>
 	</form>
 </div>
+<?php 
+
+$feed->updateFeedFromFile();
+
+?>

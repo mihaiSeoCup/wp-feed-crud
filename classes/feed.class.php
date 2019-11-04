@@ -3,21 +3,22 @@
 class Feed {
 
 	public $meta_fields = array(
-								'feed_custom_creationid',
-								'feed_custom_domainid',
-								'feed_custom_vendor',
-								'feed_custom_iframe_url',
-								'feed_custom_software',
-								'feed_custom_slottypes',
-								'feed_custom_slotthemes',
-								'feed_custom_slotrtp',
+								'feed_custom_creationid' => 'Creation ID',
+								'feed_custom_domainid' => 'Domain ID',
+								'feed_custom_vendor' => 'Vendor',
+								'feed_custom_iframe_url' => 'Link Iframe',
+								'feed_custom_software' => 'Software',
+								'feed_custom_slottypes' => 'Slot type',
+								'feed_custom_slotthemes' => 'Slot themes',
+								'feed_custom_slotrtp' => 'Slot rtp',
+								'camp_descriere_2' => 'Camp descriere2',
 
 							);
-	public function __construct( )
-    {
-    }
 
-    
+     public function __construct()
+    {
+    	add_action( 'wp_ajax_wpfcrud_update_posts', array($this, 'updateFeedPostType') );
+    }
     public function getFeed($feed_url) {
 		if( !empty($feed_url) ) {
 
@@ -123,11 +124,13 @@ class Feed {
     }
 
     public function showContentTable( $file_data_arr = null ) {
-    	//get post table fields
-    	$posts_table_fields = $this->getPostTableFields();
+    	
+    	$posts_table_fields = $this->getPostTableFields(); //get post table fields
 		$drodpown_table_fields = array();
+
+		
     	foreach ( $posts_table_fields  as $posts_table_field ) {
-			$drodpown_table_fields[] = $posts_table_field->field;
+			$drodpown_table_fields[] = $posts_table_field->Field;
     	}
 
     	
@@ -135,28 +138,31 @@ class Feed {
 			$drodpown_table_fields[]  = $meta_field;
     	}
 
+    	//$drodpown_table_fields is accesed in the template now
+
     	include_once( __DIR__ . '/../templates/contenttable.php');
     }
 
     public function updateFeedPostType( $post_type = "game", $feed_array = array() ) {
-
+    	echo "ssss";
+    	wp_die();
     }
 
     public function addFeedToPostType( $post_type = "game", $feed_array = array() ) {
 
     	$content = (!empty($feed_array['data']['presentation']['description']) && isset($feed_array['data']['presentation']['description'][0]) )? $feed_array['data']['presentation']['description'][0]:'';
     	$args = array(
-						'post_type' => "game",
-						'post_name' => $feed_array['data']['presentation']['gameName'][0],
-					   'post_title' => $feed_array['data']['presentation']['gameName'][0],
-					   'post_content' => $content,
-					   'post_status' => 'publish',
-					   'comment_status' => 'closed',   // if you prefer
-					   'ping_status' => 'closed',      // if you prefer
-					   'post_modified' => date('Y-m-d h:i:s', strtotime($feed_array['data']['creation']['lastModified'])),
-					   'post_date_gmt' => date('Y-m-d h:i:s', strtotime($feed_array['data']['creation']['lastModified'])),
-					   // 'post_category' => implode(",", $feed_array['data']['categories']),
-					   'tags_input' =>  (!empty($feed_array['data']['tags']))? implode(",", $feed_array['data']['tags']): '',
+					'post_type' => "game",
+					'post_name' => $feed_array['data']['presentation']['gameName'][0],
+					'post_title' => $feed_array['data']['presentation']['gameName'][0],
+					'post_content' => $content,
+					'post_status' => 'publish',
+					'comment_status' => 'closed',   // if you prefer
+					'ping_status' => 'closed',      // if you prefer
+					'post_modified' => date('Y-m-d h:i:s', strtotime($feed_array['data']['creation']['lastModified'])),
+					'post_date_gmt' => date('Y-m-d h:i:s', strtotime($feed_array['data']['creation']['lastModified'])),
+					// 'post_category' => implode(",", $feed_array['data']['categories']),
+					'tags_input' =>  (!empty($feed_array['data']['tags']))? implode(",", $feed_array['data']['tags']): '',
 
     				);	
 
